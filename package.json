@@ -1,0 +1,22 @@
+{
+  "name": "trigger-langsmith-demo",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "trigger dev",
+    "deploy": "trigger deploy"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "2.0.14",
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/exporter-trace-otlp-http": "0.203.0",
+    "@trigger.dev/sdk": "4.0.2",
+    "ai": "5.0.14",
+    "zod": "3.25.76"
+  },
+  "devDependencies": {
+    "@trigger.dev/build": "4.0.2",
+    "trigger.dev": "4.0.2",
+    "typescript": "^5"
+  }
+}
