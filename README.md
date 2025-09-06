@@ -1,12 +1,14 @@
-# Trigger.dev + LangSmith Telemetry Demo
+# Trigger.dev + LangSmith legacy Telemetry Demo
 
-This project demonstrates how to integrate [Trigger.dev](https://trigger.dev) with [LangSmith](https://smith.langchain.com) for AI telemetry and observability. It includes a sample task that generates text using OpenAI's GPT-4o model while capturing telemetry data in LangSmith.
+This project demonstrates how to integrate [Trigger.dev](https://trigger.dev) with [LangSmith](https://smith.langchain.com) using their legacy telemetry SDK for AI telemetry and observability. It includes a sample task that generates text using OpenAI's GPT-4o model with AI SDK 4 while capturing comprehensive telemetry data in LangSmith using the LangSmith SDK.
 
 ## Features
 
 - **Trigger.dev Integration**: Background task processing with retry logic and scaling
-- **LangSmith Telemetry**: Complete observability for AI model interactions
+- **LangSmith SDK Integration**: Native LangSmith SDK for enhanced telemetry and tracing
+- **AI SDK 4**: Modern AI SDK for OpenAI model interactions
 - **OpenAI Integration**: Text generation using GPT-4o model
+- **OTEL Telemetry**: OpenTelemetry-based observability with LangSmith
 - **TypeScript Support**: Fully typed codebase for better development experience
 
 ## Prerequisites
@@ -117,15 +119,17 @@ Once the development server is running, you can trigger the task:
 The main task does the following:
 
 1. **Receives Input**: Takes a string input parameter
-2. **Calls OpenAI**: Uses the AI SDK to generate text with GPT-4o
-3. **Captures Telemetry**: Automatically sends trace data to LangSmith
-4. **Returns Results**: Logs the generated text
+2. **Creates Trace**: Uses Trigger.dev's logger to create a trace span
+3. **Calls OpenAI**: Uses AI SDK 4 to generate text with GPT-4o
+4. **Captures Telemetry**: Automatically sends trace data to LangSmith via OTEL
+5. **Returns Results**: Logs the generated text
 
 ### Telemetry Configuration
 
 The `trigger.config.ts` file configures:
 
-- **OTLP Exporter**: Sends telemetry data to LangSmith
+- **LangSmith OTEL Integration**: Uses LangSmith SDK's `initializeOTEL()` for seamless telemetry setup
+- **Automatic Span Export**: Configures the default LangSmith span exporter
 - **Retry Logic**: Handles failures with exponential backoff
 - **Process Management**: Optimizes performance with keep-alive settings
 - **Machine Scaling**: Uses `small-2x` machines for processing
@@ -193,14 +197,39 @@ This will:
    - Check that your LangSmith project exists
 
 4. **Development server won't start**
+
    - Make sure you're using Node.js 18 or higher
    - Try deleting `node_modules` and running `npm install` again
+
+5. **Telemetry configuration issues**
+   - Ensure the LangSmith SDK is properly initialized in `trigger.config.ts`
+   - Verify that the OTEL setup is not conflicting with other telemetry tools
 
 ### Getting Help
 
 - **Trigger.dev**: [Documentation](https://trigger.dev/docs) | [Discord](https://discord.gg/trigger)
 - **LangSmith**: [Documentation](https://docs.smith.langchain.com) | [Support](https://smith.langchain.com/support)
 - **OpenAI**: [Documentation](https://platform.openai.com/docs) | [Support](https://platform.openai.com/support)
+
+## Key Technologies
+
+### AI SDK 4
+
+This project uses AI SDK version 4.3.19, which provides:
+
+- Improved OpenAI integration
+- Better TypeScript support
+- Enhanced streaming capabilities
+- Optimized performance
+
+### LangSmith SDK
+
+The LangSmith SDK (v0.3.67) enables:
+
+- Native OTEL integration via `initializeOTEL()`
+- Automatic span collection and export
+- Seamless telemetry configuration
+- Enhanced debugging capabilities
 
 ## Next Steps
 
@@ -209,3 +238,5 @@ This will:
 - Add error handling and retry logic
 - Implement webhook triggers for real-time processing
 - Scale to multiple tasks and workflows
+- Experiment with different AI models and providers
+- Add custom telemetry and metrics

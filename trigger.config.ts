@@ -1,5 +1,14 @@
 import { defineConfig } from "@trigger.dev/sdk";
-import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
+import { initializeOTEL } from "langsmith/experimental/otel/setup";
+
+const { DEFAULT_LANGSMITH_SPAN_EXPORTER } = initializeOTEL({
+  skipGlobalContextManagerSetup: true,
+  exporterConfig: {
+    url: "https://api.smith.langchain.com/otel/v1/traces",
+    projectName: process.env.LANGSMITH_PROJECT ?? "default",
+    apiKey: process.env.LANGSMITH_API_KEY!,
+  },
+});
 
 export default defineConfig({
   project: process.env.TRIGGER_PROJECT_REF!,
@@ -21,14 +30,6 @@ export default defineConfig({
   },
   machine: "small-2x",
   telemetry: {
-    exporters: [
-      new OTLPTraceExporter({
-        url: "https://api.smith.langchain.com/otel/v1/traces",
-        headers: {
-          "x-api-key": process.env.LANGSMITH_API_KEY!,
-          "Langsmith-Project": process.env.LANGSMITH_PROJECT ?? "default",
-        },
-      }),
-    ],
+    exporters: [DEFAULT_LANGSMITH_SPAN_EXPORTER],
   },
 });
